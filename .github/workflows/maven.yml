@@ -24,4 +24,13 @@ jobs:
           cache: maven
 
       - name: Compile and execute tests
-        run: mvn -B package # compile the code and execute all the tests
+        run: |
+          mvn -B package # compile the code and execute all the tests
+          
+          if [ $EXIT_CODE -eq 0 ]; then
+          echo "### ✅ ¡Todos los tests han pasado correctamente!" >> $GITHUB_STEP_SUMMARY
+          else
+          echo "### ❌ ¡Han fallado algunos tests!" >> $GITHUB_STEP_SUMMARY
+          echo "Revisa tu código para identificar los errores." >> $GITHUB_STEP_SUMMARY
+          exit $EXIT_CODE 
+          fi
